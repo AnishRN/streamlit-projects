@@ -4,7 +4,7 @@ import re
 import string
 from nltk.stem import SnowballStemmer
 model = joblib.load("youtube-spam-checker/spam_classifier_model.pkl")
-vectorizer = joblib.load("vectorizer.pkl")
+vectorizer = joblib.load("youtube-spam-checker/vectorizer.pkl")
 stemmer = SnowballStemmer("english")
 def preprocess_and_stem(text):
     text = text.lower()
