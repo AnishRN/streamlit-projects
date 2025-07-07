@@ -2,8 +2,8 @@ import streamlit as st
 import joblib
 import numpy as np
 
-RanFor = joblib.load("RanForModel.pkl")
-XB = joblib.load("XBModel.pkl")
+RanFor = joblib.load("loan-approval-predictor/RanForModel.pkl")
+XB = joblib.load("loan-approval-predictor/XBModel.pkl")
 
 st.title("🏦 Loan Approval Prediction App")
 st.markdown("🔍 Fill out the form below to check **loan approval prediction** using two models: Random Forest (RanFor) and XGBoost (XB).")
