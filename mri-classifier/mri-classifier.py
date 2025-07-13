@@ -1,12 +1,21 @@
-import os
-import tensorflow as tf
-from PIL import Image
 import streamlit as st
 import numpy as np
+import tensorflow as tf
+from PIL import Image
+import os
+import tempfile
 
-MODEL_PATH = os.path.join(os.path.dirname(__file__), 'mri_classifier.h5')
-model = tf.keras.models.load_model(MODEL_PATH)
+# Step 1: Load legacy .h5 model with compile=False
+model = tf.keras.models.load_model("mri_classifier.h5", compile=False)
 
+# Step 2: Save as .keras temporarily (inside writable temp dir)
+with tempfile.TemporaryDirectory() as tmpdirname:
+    keras_path = os.path.join(tmpdirname, "mri_classifier.keras")
+    model.save(keras_path, save_format="keras")
+    # Step 3: Load the cleaner .keras version
+    model = tf.keras.models.load_model(keras_path)
+
+# Class labels
 class_labels = ['Glioma Tumor', 'Meningioma Tumor', 'Pituitary Tumor', 'No Tumor']
 info_links = {
     'Glioma Tumor': 'https://www.cancer.gov/types/brain/patient/adult-glioma-treatment-pdq',
@@ -14,6 +23,7 @@ info_links = {
     'Pituitary Tumor': 'https://www.hopkinsmedicine.org/health/conditions-and-diseases/pituitary-tumors',
     'No Tumor': 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2723141/'
 }
+
 st.title("🧠 Brain Tumor Classification")
 st.markdown("Upload an MRI brain scan to predict the type of tumor (if any).")
 
@@ -30,6 +40,7 @@ This web application is built using a Convolutional Neural Network (CNN) trained
 
 This tool is for educational and demonstration purposes only. For medical advice, consult a professional.
 """)
+
 uploaded_file = st.file_uploader("Choose an MRI image", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
