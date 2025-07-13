@@ -3,7 +3,8 @@ import numpy as np
 import tensorflow as tf
 from PIL import Image
 
-model = tf.keras.models.load_model('mri_classifier.h5') 
+MODEL_PATH = os.path.join(os.path.dirname(__file__), 'mri_classifier.h5')
+model = tf.keras.models.load_model(MODEL_PATH)
 
 class_labels = ['Glioma Tumor', 'Meningioma Tumor', 'Pituitary Tumor', 'No Tumor']
 info_links = {
