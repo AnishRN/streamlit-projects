@@ -1,7 +1,8 @@
-import streamlit as st
-import numpy as np
+import os
 import tensorflow as tf
 from PIL import Image
+import streamlit as st
+import numpy as np
 
 MODEL_PATH = os.path.join(os.path.dirname(__file__), 'mri_classifier.h5')
 model = tf.keras.models.load_model(MODEL_PATH)
