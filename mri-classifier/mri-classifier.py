@@ -5,17 +5,15 @@ from PIL import Image
 import os
 import tempfile
 
-# Step 1: Load legacy .h5 model with compile=False
-model = tf.keras.models.load_model("mri_classifier.h5", compile=False)
+import os
 
-# Step 2: Save as .keras temporarily (inside writable temp dir)
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "mri_classifier.h5")
+model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 with tempfile.TemporaryDirectory() as tmpdirname:
     keras_path = os.path.join(tmpdirname, "mri_classifier.keras")
     model.save(keras_path, save_format="keras")
-    # Step 3: Load the cleaner .keras version
     model = tf.keras.models.load_model(keras_path)
 
-# Class labels
 class_labels = ['Glioma Tumor', 'Meningioma Tumor', 'Pituitary Tumor', 'No Tumor']
 info_links = {
     'Glioma Tumor': 'https://www.cancer.gov/types/brain/patient/adult-glioma-treatment-pdq',
