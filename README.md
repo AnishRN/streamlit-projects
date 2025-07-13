@@ -39,7 +39,8 @@ streamlit run <your_script.py>
 ```
 
 📌 Note
-All apps are live on Streamlit Cloud (free-tier). Feel free to fork the repo or test them directly online using the links above!
+- All the projects and apps mentioned in this repository are ***only for educational purposes!!!***
+- All apps are live on Streamlit Cloud (free-tier). Feel free to fork the repo or test them directly online using the links above!
 
 ---
 
