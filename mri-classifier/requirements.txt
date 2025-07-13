@@ -14,7 +14,6 @@ scikit-learn==1.2.2
 
 tensorflow==2.13.0
 keras==2.13.0
-streamlit==1.26.0
 
 # Optional for plot_model
 pydot==1.4.2
