@@ -14,18 +14,31 @@ Predicts whether a YouTube comment is spam or not using NLP.
 Predicts whether a loan will be approved based on financial and personal input details using Random Forest and XGBoost models.  
 🔗 [Try the App](https://app-projects-bpgjh4riyznxdtbmjen3tc.streamlit.app/)
 
+## 🧠 Brain Tumor MRI Classifier  
+A deep learning model (CNN) trained to classify brain MRI scans into four categories: **Glioma**, **Meningioma**, **Pituitary**, and **No Tumor**.  
+🔗 [Try the App](https://app-projects-vbc93rqtnisk9z8whihewb.streamlit.app/)
+⚠️ **Note**: This project **cannot be deployed** on Streamlit Community Cloud due to **TensorFlow version restrictions** and **lack of support for large model files**. However, it runs **perfectly on local environments**.
+
+### 🔧 To run locally:
+```bash
+git clone https://github.com/AnishRN/streamlit-projects.git
+cd brain-tumor-classifier/
+pip install -r requirements.txt
+streamlit run app.py
+```
 ---
 
 ## 📁 Projects
 
 - `youtube-spam-checker/`: NLP-based comment classification using Naive Bayes.
 - `loan-approval-predictor/`: Structured dataset classification using ensemble models.
+- `brain-tumor-classifier/`: Deep learning-based image classification using CNN and medical MRI scans.
   
 Each project contains:
 - `notebook.ipynb`: Complete analysis & model-building notebook
 - `.py` script for Streamlit deployment
 - `requirements.txt`
-- Trained models (`.pkl`)
+- Trained models (`.pkl`,`.h5`)
 
 ---
 
