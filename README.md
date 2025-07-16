@@ -14,7 +14,7 @@ Predicts whether a YouTube comment is spam or not using NLP.
 Predicts whether a loan will be approved based on financial and personal input details using Random Forest and XGBoost models.  
 🔗 [Try the App](https://app-projects-bpgjh4riyznxdtbmjen3tc.streamlit.app/)
 
-## 🧠 Brain Tumor MRI Classifier  
+### 3. 🧠 Brain Tumor MRI Classifier  
 A deep learning model (CNN) trained to classify brain MRI scans into four categories: **Glioma**, **Meningioma**, **Pituitary**, and **No Tumor**.  
 🔗 [Try the App](https://app-projects-vbc93rqtnisk9z8whihewb.streamlit.app/)
 ⚠️ **Note**: This project **cannot be deployed** on Streamlit Community Cloud due to **TensorFlow version restrictions** and **lack of support for large model files**. However, it runs **perfectly on local environments**.
