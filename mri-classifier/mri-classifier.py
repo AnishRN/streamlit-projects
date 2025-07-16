@@ -7,7 +7,7 @@ import tempfile
 
 import os
 
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "mri_classifier.keras")
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "mri_classifier_v12.keras")
 model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 with tempfile.TemporaryDirectory() as tmpdirname:
     keras_path = os.path.join(tmpdirname, "mri_classifier.keras")
