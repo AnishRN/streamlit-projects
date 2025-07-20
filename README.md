@@ -17,7 +17,7 @@ Predicts whether a loan will be approved based on financial and personal input d
 ### 3. 🧠 Brain Tumor MRI Classifier  
 A deep learning model (CNN) trained to classify brain MRI scans into four categories: **Glioma**, **Meningioma**, **Pituitary**, and **No Tumor**.  
 🔗 [Try the App](https://app-projects-vbc93rqtnisk9z8whihewb.streamlit.app/)  
-⚠️ **Note**: This project **cannot be deployed** on Streamlit Community Cloud due to **TensorFlow version restrictions** and **lack of support for large model files**. However, it runs **perfectly on local environments**.
+
 
 ### 4. 🎭 IMDB Sentiment Analyzer  
 A Recurrent Neural Network (RNN) trained on the IMDB movie reviews dataset to classify sentiment as **Positive** or **Negative**.  
