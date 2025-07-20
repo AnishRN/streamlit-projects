@@ -22,7 +22,7 @@ A deep learning model (CNN) trained to classify brain MRI scans into four catego
 ### 4. 🎭 IMDB Sentiment Analyzer  
 A Recurrent Neural Network (RNN) trained on the IMDB movie reviews dataset to classify sentiment as **Positive** or **Negative**.  
 🔗 [Try the App](https://app-projects-zr8dr9ccrjqfdtfqm45w9k.streamlit.app/)  
-⚠️ **Note**: This project **cannot be deployed** on Streamlit Community Cloud due to **TensorFlow version restrictions** and **lack of support for large model files**. However, it runs **perfectly on local environments**.
+
 
 ---
 
