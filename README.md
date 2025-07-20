@@ -16,16 +16,14 @@ Predicts whether a loan will be approved based on financial and personal input d
 
 ### 3. 🧠 Brain Tumor MRI Classifier  
 A deep learning model (CNN) trained to classify brain MRI scans into four categories: **Glioma**, **Meningioma**, **Pituitary**, and **No Tumor**.  
-🔗 [Try the App](https://app-projects-vbc93rqtnisk9z8whihewb.streamlit.app/)
+🔗 [Try the App](https://app-projects-vbc93rqtnisk9z8whihewb.streamlit.app/)  
 ⚠️ **Note**: This project **cannot be deployed** on Streamlit Community Cloud due to **TensorFlow version restrictions** and **lack of support for large model files**. However, it runs **perfectly on local environments**.
 
-### 🔧 To run locally:
-```bash
-git clone https://github.com/AnishRN/streamlit-projects.git
-cd brain-tumor-classifier/
-pip install -r requirements.txt
-streamlit run app.py
-```
+### 4. 🎭 IMDB Sentiment Analyzer  
+A Recurrent Neural Network (RNN) trained on the IMDB movie reviews dataset to classify sentiment as **Positive** or **Negative**.  
+🔗 [Try the App](https://app-projects-zr8dr9ccrjqfdtfqm45w9k.streamlit.app/)
+⚠️ **Note**: This project **cannot be deployed** on Streamlit Community Cloud due to **TensorFlow version restrictions** and **lack of support for large model files**. However, it runs **perfectly on local environments**.
+
 ---
 
 ## 📁 Projects
@@ -33,12 +31,13 @@ streamlit run app.py
 - `youtube-spam-checker/`: NLP-based comment classification using Naive Bayes.
 - `loan-approval-predictor/`: Structured dataset classification using ensemble models.
 - `brain-tumor-classifier/`: Deep learning-based image classification using CNN and medical MRI scans.
-  
+- `imdb-sentiment-analyzer/`: Sentiment analysis using RNN (LSTM) on the IMDB reviews dataset.
+
 Each project contains:
 - `notebook.ipynb`: Complete analysis & model-building notebook
 - `.py` script for Streamlit deployment
 - `requirements.txt`
-- Trained models (`.pkl`,`.h5`)
+- Trained models (`.pkl`, `.h5`)
 
 ---
 
@@ -49,17 +48,3 @@ git clone https://github.com/AnishRN/streamlit-projects.git
 cd <project-folder-name>
 pip install -r requirements.txt
 streamlit run <your_script.py>
-```
-
-📌 Note
-- All the projects and apps mentioned in this repository are ***ONLY FOR EDUCATIONAL PURPOSES!!!***
-- All apps are live on Streamlit Cloud (free-tier). Feel free to fork the repo or test them directly online using the links above!
-
----
-
-✅ You can now:
-- Create a `README.md` file in your repo
-- Paste the above content
-- Commit the file
-
-Let me know if you want a badge, preview GIF, or project-specific sections added!
