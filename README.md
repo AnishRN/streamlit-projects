@@ -48,3 +48,10 @@ git clone https://github.com/AnishRN/streamlit-projects.git
 cd <project-folder-name>
 pip install -r requirements.txt
 streamlit run <your_script.py>
+```
+
+##⚠️ **Disclaimer**
+All the projects in this repository are created for educational, reference, or personal experimentation purposes only.
+They are not intended for commercial use, clinical diagnosis, or any field deployment.
+
+Use them responsibly and do not rely on these applications for critical decisions.
