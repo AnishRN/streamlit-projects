@@ -7,7 +7,7 @@ import os
 # --- Load the model ---
 @st.cache_resource(show_spinner="Loading model...")
 def load_model():
-    model_path = os.path.join(os.path.dirname(__file__), "mri_classifier.h5")
+    model_path = os.path.join(os.path.dirname(__file__), "mri-classifier.h5")
     model = tf.keras.models.load_model(model_path, compile=False)
     return model
 
