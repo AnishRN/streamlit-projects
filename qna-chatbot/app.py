@@ -1,56 +1,65 @@
-from itertools import chain
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_community.llms import Ollama
 import streamlit as st
+import requests
 import os
-from dotenv import load_dotenv
-# Load environment variables from .env file
-load_dotenv()
-## Langsmith Tracking
-os.environ["LANGCHAIN_TRACING_V2"] = "true"
-os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
-os.environ["LANGCHAIN_PROJECT"] = "Simple QnA Chatbot with Ollama"
 
-##Prompt Template
-prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", "You are a helpful assistant that answers questions based on the provided context."),
-        ("user", "Question: {question}"),
-    ]
-)
+# Title
+st.title("🧠 Enhanced Q&A Chatbot (via Hugging Face API)")
 
-def generate_answer(question,llm,temperature,max_tokens):
-    llm=Ollama(model=llm)
-    output_parser=StrOutputParser()
-    chain=prompt|llm|output_parser
-    answer=chain.invoke({'question':question})
-    return answer
+# Load Hugging Face token from Streamlit Secrets
+HF_API_TOKEN = st.secrets.get("HUGGINGFACE_API_TOKEN", "")
 
+if not HF_API_TOKEN:
+    st.error("Hugging Face API token not found! Please add it to your Streamlit secrets.")
+    st.stop()
 
+# Model selector
+MODEL_OPTIONS = {
+    "FLAN-T5 Small (google/flan-t5-small)": "google/flan-t5-small",
+    "FLAN-T5 Base (google/flan-t5-base)": "google/flan-t5-base",
+    "BLOOM (bigscience/bloom)": "bigscience/bloom",
+    "Falcon-7B Instruct (tiiuae/falcon-7b-instruct)": "tiiuae/falcon-7b-instruct",
+    "Mistral-7B (mistralai/Mistral-7B-Instruct-v0.1)": "mistralai/Mistral-7B-Instruct-v0.1"
+}
 
-## #Title of the app
-st.title("Enhanced Q&A Chatbot With OpenAI")
+selected_model_name = st.sidebar.selectbox("🔧 Select Model", list(MODEL_OPTIONS.keys()))
+selected_model = MODEL_OPTIONS[selected_model_name]
 
+# User input
+st.write("💬 Ask any question below:")
+user_input = st.text_input("You:")
 
-## Select the OpenAI model
-llm=st.sidebar.selectbox("Select Open Source model",["mistral", "llama2", "phi", "gemma"])
+# Hugging Face inference function
+def generate_response(question, model_id):
+    headers = {
+        "Authorization": f"Bearer {HF_API_TOKEN}"
+    }
+    payload = {
+        "inputs": f"Question: {question} Answer:",
+        "parameters": {
+            "max_new_tokens": 100,
+            "temperature": 0.7
+        },
+        "options": {
+            "wait_for_model": True
+        }
+    }
+    response = requests.post(
+        f"https://api-inference.huggingface.co/models/{model_id}",
+        headers=headers,
+        json=payload
+    )
+    result = response.json()
+    if isinstance(result, list):
+        return result[0]["generated_text"]
+    elif "generated_text" in result:
+        return result["generated_text"]
+    else:
+        return f"⚠️ Error: {result.get('error', 'Unknown error')}"
 
-## Adjust response parameter
-temperature=st.sidebar.slider("Temperature",min_value=0.0,max_value=1.0,value=0.7)
-max_tokens = st.sidebar.slider("Max Tokens", min_value=50, max_value=300, value=150)
-
-## MAin interface for user input
-st.write("Goe ahead and ask any question")
-user_input=st.text_input("You:")
-
-
-
-if user_input :
-    response=generate_answer(user_input,llm,temperature,max_tokens)
-    st.write(response)
+# Display response
+if user_input:
+    with st.spinner("Generating answer..."):
+        answer = generate_response(user_input, selected_model)
+        st.success(answer)
 else:
-    st.write("Please provide the user input")
-
-
-
+    st.info("Enter a question to begin.")
