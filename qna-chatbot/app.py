@@ -5,10 +5,10 @@ import requests
 st.title("🧠 Enhanced Q&A Chatbot (via Hugging Face API)")
 
 # Load Hugging Face token from Streamlit Secrets
-HF_API_KEY = st.secrets["HUGGINGFACE_API_KEY"]
+HF_API_KEY = st.secrets.get("HUGGINGFACE_API_KEY")
 
 if not HF_API_KEY:
-    st.error("Hugging Face API token not found! Please add it to your Streamlit secrets.")
+    st.error("❌ Hugging Face API token not found! Please add it to your Streamlit secrets.")
     st.stop()
 
 # Model selector
@@ -42,20 +42,28 @@ def generate_response(question, model_id):
             "wait_for_model": True
         }
     }
+
     response = requests.post(
         f"https://api-inference.huggingface.co/models/{model_id}",
         headers=headers,
         json=payload
     )
-      # 🔍 Add this line for debugging
-    print("RAW RESPONSE:", response.text)
-    result = response.json()
-    if isinstance(result, list):
-        return result[0]["generated_text"]
-    elif "generated_text" in result:
-        return result["generated_text"]
-    else:
-        return f"⚠️ Error: {result.get('error', 'Unknown error')}"
+
+    # Check if response is successful
+    if response.status_code != 200:
+        return f"⚠️ Error {response.status_code}: {response.text}"
+
+    try:
+        result = response.json()
+        # Handle both list and dict results
+        if isinstance(result, list) and "generated_text" in result[0]:
+            return result[0]["generated_text"]
+        elif isinstance(result, dict) and "generated_text" in result:
+            return result["generated_text"]
+        else:
+            return f"⚠️ Unexpected response format: {result}"
+    except requests.exceptions.JSONDecodeError:
+        return "❌ Failed to decode response from Hugging Face API."
 
 # Display response
 if user_input:
