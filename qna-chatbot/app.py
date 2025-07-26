@@ -16,10 +16,9 @@ MODEL_OPTIONS = {
     "FLAN-T5 Small (google/flan-t5-small)": "google/flan-t5-small",
     "FLAN-T5 Base (google/flan-t5-base)": "google/flan-t5-base",
     "BLOOM (bigscience/bloom)": "bigscience/bloom",
-    "Falcon-7B Instruct (tiiuae/falcon-7b-instruct)": "tiiuae/falcon-7b-instruct",
-    "Mistral-7B (mistralai/Mistral-7B-Instruct-v0.1)": "mistralai/Mistral-7B-Instruct-v0.1"
+    "GPT2 (gpt2)": "gpt2",
+    "DistilGPT2 (distilgpt2)": "distilgpt2"
 }
-
 selected_model_name = st.sidebar.selectbox("🔧 Select Model", list(MODEL_OPTIONS.keys()))
 selected_model = MODEL_OPTIONS[selected_model_name]
 
