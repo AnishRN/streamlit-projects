@@ -47,6 +47,8 @@ def generate_response(question, model_id):
         headers=headers,
         json=payload
     )
+      # 🔍 Add this line for debugging
+    print("RAW RESPONSE:", response.text)
     result = response.json()
     if isinstance(result, list):
         return result[0]["generated_text"]
