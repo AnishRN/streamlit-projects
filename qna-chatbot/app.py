@@ -1,14 +1,13 @@
 import streamlit as st
 import requests
-import os
 
 # Title
 st.title("🧠 Enhanced Q&A Chatbot (via Hugging Face API)")
 
 # Load Hugging Face token from Streamlit Secrets
-HF_API_TOKEN = st.secrets.get("HUGGINGFACE_API_TOKEN", "")
+HF_API_KEY = st.secrets["HUGGINGFACE_API_KEY"]
 
-if not HF_API_TOKEN:
+if not HF_API_KEY:
     st.error("Hugging Face API token not found! Please add it to your Streamlit secrets.")
     st.stop()
 
@@ -31,7 +30,7 @@ user_input = st.text_input("You:")
 # Hugging Face inference function
 def generate_response(question, model_id):
     headers = {
-        "Authorization": f"Bearer {HF_API_TOKEN}"
+        "Authorization": f"Bearer {HF_API_KEY}"
     }
     payload = {
         "inputs": f"Question: {question} Answer:",
