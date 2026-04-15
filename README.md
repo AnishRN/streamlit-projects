@@ -23,7 +23,9 @@ A deep learning model (CNN) trained to classify brain MRI scans into four catego
 A Recurrent Neural Network (RNN) trained on the IMDB movie reviews dataset to classify sentiment as **Positive** or **Negative**.  
 🔗 [Try the App](https://app-projects-zr8dr9ccrjqfdtfqm45w9k.streamlit.app/)  
 
-
+### 5. 🎥 Smart Exam Proctoring System (No AI/ML)  
+A real-time browser-based exam monitoring system using classical computer vision techniques (OpenCV Haar Cascade).
+🔗 [Try the App](https://app-projects-zr8dr9ccrjqfdtfqm45w9k.streamlit.app/)  
 ---
 
 ## 📁 Projects
@@ -32,6 +34,7 @@ A Recurrent Neural Network (RNN) trained on the IMDB movie reviews dataset to cl
 - `loan-approval-predictor/`: Structured dataset classification using ensemble models.
 - `brain-tumor-classifier/`: Deep learning-based image classification using CNN and medical MRI scans.
 - `imdb-sentiment-analyzer/`: Sentiment analysis using RNN (LSTM) on the IMDB reviews dataset.
+- `smart-exam-proctor/`: Rule-based real-time proctoring system using OpenCV and Streamlit (no AI/ML).  
 
 Each project contains:
 - `notebook.ipynb`: Complete analysis & model-building notebook
