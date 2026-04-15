@@ -26,7 +26,7 @@ A Recurrent Neural Network (RNN) trained on the IMDB movie reviews dataset to cl
 ### 5. 🎥 Smart Exam Proctoring System (No AI/ML)  
 A real-time browser-based exam monitoring system using classical computer vision techniques (OpenCV Haar Cascade).  
 🔗 [Try the App (streamlit)](https://app-projects-pgftbyx92hpz6sp8belwan.streamlit.app/)  
-🔗 [Try the App Huggingface](https://huggingface.co/spaces/yakul259/exam-proctoring-system) 
+🔗 [Try the App (Huggingface_](https://huggingface.co/spaces/yakul259/exam-proctoring-system) 
 
 ---
 
