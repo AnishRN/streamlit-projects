@@ -1,102 +1,150 @@
 import streamlit as st
-from transformers import BertTokenizer, BertForSequenceClassification
-import torch
-from PIL import Image
+import joblib
+import re
+import numpy as np
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 
-# --- Page Configuration ---
-# This must be the first Streamlit command in your script
+# ----------------------------
+# Page config
+# ----------------------------
 st.set_page_config(
-    page_title="SafeGuard AI",
+    page_title="Cyberbullying Detection System",
     page_icon="🛡️",
-    layout="centered",
-    initial_sidebar_state="auto",
+    layout="centered"
 )
 
-# --- Configuration ---
-MODEL_PATH = "BERT_Bullying_Detector_Model"
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-# --- Load Model and Tokenizer (with caching) ---
+# ----------------------------
+# Load model + vectorizer
+# ----------------------------
 @st.cache_resource
-def load_model():
-    try:
-        model = BertForSequenceClassification.from_pretrained(MODEL_PATH)
-        tokenizer = BertTokenizer.from_pretrained(MODEL_PATH)
-        model.to(device)
-        model.eval()
-        return model, tokenizer
-    except Exception as e:
-        st.error(f"Error loading model: {e}. Make sure the model files are in the 'BERT_Bullying_Detector_Model' folder.")
-        return None, None
+def load_artifacts():
+    artifacts = joblib.load("cyberbullying_model_artifacts.pkl")
+    return artifacts["model"], artifacts["vectorizer"]
 
-model, tokenizer = load_model()
+model, vectorizer = load_artifacts()
 
-# --- Streamlit App Interface ---
-st.title("🛡️ SafeGuard AI")
-st.subheader("A Real-Time Bullying and Toxicity Detector")
-st.write(
-    "Enter any text below to check if it contains harmful content. "
-    "This tool is built on a fine-tuned BERT model to help promote safer online interactions."
+# ----------------------------
+# NLTK setup
+# ----------------------------
+nltk.download("stopwords", quiet=True)
+stop_words = set(stopwords.words("english"))
+stemmer = PorterStemmer()
+
+# ----------------------------
+# Preprocessing
+# ----------------------------
+html_re = re.compile(r"<.*?>")
+url_re = re.compile(r"http\S+")
+mention_re = re.compile(r"@\S+")
+hashtag_re = re.compile(r"#\S+")
+alpha_re = re.compile(r"[^a-zA-Z]")
+
+
+def clean_text(text):
+    text = html_re.sub("", text)
+    text = url_re.sub("", text)
+    text = mention_re.sub("", text)
+    text = hashtag_re.sub("", text)
+    text = alpha_re.sub(" ", text).lower()
+
+    words = text.split()
+    words = [w for w in words if w not in stop_words]
+    words = [stemmer.stem(w) for w in words]
+
+    return " ".join(words)
+
+# ----------------------------
+# UI DESIGN
+# ----------------------------
+
+st.title("🛡️ Cyberbullying Detection System")
+st.markdown("""
+### 📌 About this app
+This AI model analyzes text and predicts whether it contains **cyberbullying content**.
+
+- Trained on social media tweets  
+- Uses NLP + Machine Learning (Logistic Regression)  
+- Converts text into numerical features using Bag of Words  
+
+---
+
+### ⚠️ Disclaimer
+This tool is for educational purposes only and may not be 100% accurate.
+""")
+
+st.divider()
+
+# ----------------------------
+# Input Section
+# ----------------------------
+user_input = st.text_area(
+    "✍️ Enter a tweet or message below:",
+    placeholder="Type something like: You are useless and nobody likes you..."
 )
 
-user_input = st.text_area("Enter your text here:", "", height=150, placeholder="e.g., 'You are so smart!' or 'I hate this, it's terrible.'")
+# ----------------------------
+# Prediction
+# ----------------------------
+if st.button("🔍 Analyze Text"):
 
-if st.button("Analyze Text"):
-    if model and tokenizer and user_input:
-        # --- Prediction Logic ---
-        encoding = tokenizer.encode_plus(
-            user_input,
-            add_special_tokens=True,
-            max_length=128,
-            return_token_type_ids=False,
-            padding='max_length',
-            return_tensors='pt',
-            truncation=True
-        )
-        
-        input_ids = encoding['input_ids'].to(device)
-        attention_mask = encoding['attention_mask'].to(device)
-
-        with torch.no_grad():
-            outputs = model(input_ids=input_ids, attention_mask=attention_mask)
-            _, prediction = torch.max(outputs.logits, dim=1)
-            
-        confidence = torch.softmax(outputs.logits, dim=1).max().item()
-        label = "Bullying" if prediction.item() == 1 else "Not Bullying"
-
-        # --- Display Results ---
-        st.write("### Prediction:")
-        if label == "Bullying":
-            st.error(f"**{label}** (Confidence: {confidence:.2f})")
-        else:
-            st.success(f"**{label}** (Confidence: {confidence:.2f})")
-    elif not user_input:
+    if user_input.strip() == "":
         st.warning("Please enter some text to analyze.")
+    else:
+        # preprocess
+        cleaned = clean_text(user_input)
 
-# --- Performance Section ---
-with st.expander("Learn More About The Model's Performance"):
-    st.write("""
-    This model is a fine-tuned version of `bert-base-uncased`, a powerful language model developed by Google. 
-    It was trained on a balanced dataset of over 115,000 text samples to learn the nuances of toxic and non-toxic language.
-    """)
-    
-    st.write("#### Key Performance Metrics:")
-    st.text("""
-    - Accuracy: 93%
-    - Precision (Bullying): 90%
-    - Recall (Bullying): 96%
-    - F1-Score (Bullying): 93%
-    """)
-    
-    st.write("#### Confusion Matrix:")
-    st.write("The matrix below shows how the model performed on the test data. It correctly identified 5455 bullying cases while misclassifying only 225.")
-    
-    try:
-        # Make sure the confusion matrix image is in the same folder as app.py
-        # or provide the correct path.
-        image = Image.open('confusion_matrix.png')
-        st.image(image, caption='Confusion Matrix for the BERT model')
-    except FileNotFoundError:
-        st.warning("`confusion_matrix.png` not found. Please add it to your repository to display the matrix.")
+        # vectorize
+        vector = vectorizer.transform([cleaned])
 
-st.markdown("<br><hr><center>Developed with ❤️ by a student passionate about safe AI.</center>", unsafe_allow_html=True)
+        # prediction
+        prediction = model.predict(vector)[0]
+
+        # probability (if available)
+        if hasattr(model, "predict_proba"):
+            proba = model.predict_proba(vector).max()
+        else:
+            proba = None
+
+        # ----------------------------
+        # Output Section
+        # ----------------------------
+        st.subheader("📊 Result")
+
+        if "not" in prediction.lower() or prediction == 0:
+            st.success("✅ This text is likely NON-CYBERBULLYING")
+            st.balloons()
+        else:
+            st.error("🚨 This text is likely CYBERBULLYING")
+
+        st.write(f"**Predicted Class:** {prediction}")
+
+        if proba:
+            st.write(f"**Confidence Score:** {proba:.2f}")
+
+        # ----------------------------
+        # Show preprocessing info
+        # ----------------------------
+        with st.expander("🧹 View Preprocessed Text"):
+            st.code(cleaned)
+
+        with st.expander("ℹ️ How it works"):
+            st.markdown("""
+            1. Text cleaning (remove URLs, mentions, symbols)  
+            2. Tokenization + stemming  
+            3. Bag of Words vectorization  
+            4. Logistic Regression prediction  
+            """)
+
+# ----------------------------
+# Sidebar info
+# ----------------------------
+st.sidebar.title("📌 Model Info")
+st.sidebar.write("**Algorithm:** Logistic Regression")
+st.sidebar.write("**Feature Extraction:** Bag of Words")
+st.sidebar.write("**Dataset:** Cyberbullying Tweets")
+st.sidebar.write("**Output:** Multi-class classification")
+
+st.sidebar.divider()
+st.sidebar.write("💡 Tip: Try different toxic and non-toxic sentences!")
