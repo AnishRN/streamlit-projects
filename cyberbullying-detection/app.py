@@ -20,7 +20,7 @@ st.set_page_config(
 # ----------------------------
 @st.cache_resource
 def load_artifacts():
-    artifacts = joblib.load("cyberbullying_model_artifacts.pkl")
+    artifacts = joblib.load("cyberbullying-detection/cyberbullying_model_artifacts.pkl")
     return artifacts["model"], artifacts["vectorizer"]
 
 model, vectorizer = load_artifacts()
