@@ -23,10 +23,10 @@ A deep learning model (CNN) trained to classify brain MRI scans into four catego
 A Recurrent Neural Network (RNN) trained on the IMDB movie reviews dataset to classify sentiment as **Positive** or **Negative**.  
 🔗 [Try the App](https://app-projects-zr8dr9ccrjqfdtfqm45w9k.streamlit.app/)  
 
-### 5. 🎥 Smart Exam Proctoring System (No AI/ML)  
-A real-time browser-based exam monitoring system using classical computer vision techniques (OpenCV Haar Cascade).  
+### 5. 🎥 Cyberbullying Detection System
+An NLP Based system that detects cyberbullying and toxicity in text.  
 🔗 [Try the App (streamlit)](https://app-projects-pgftbyx92hpz6sp8belwan.streamlit.app/)  
-🔗 [Try the App (Huggingface)](https://huggingface.co/spaces/yakul259/exam-proctoring-system) 
+🔗 [Try the App (Huggingface)](https://huggingface.co/spaces/yakul259/toxicity-detection?logs=container) 
 
 ---
 
